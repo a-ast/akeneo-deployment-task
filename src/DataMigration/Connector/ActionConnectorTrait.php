@@ -7,11 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait ActionConnectorTrait
 {
-    public function createRequest(array $data): Request
+    public function createRequest(array $data, array $query = []): Request
     {
         $content = json_encode($data);
 
-        return new Request([], [], [], [], [], [], $content);
+        return new Request($query, [], [], [], [], [], $content);
     }
 
     public function validateResponse(Response $response): void

@@ -21,6 +21,10 @@ services:
     arguments:
       - '@akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update'
 
+  Aa\DeploymentTask\DataMigration\Connector\ReferenceEntityRecord:
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.connector.action.record.create_or_update'
+
   Aa\DeploymentTask\DataMigration\Connector\ReferenceEntityAttribute:
     arguments:
       - '@akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update'
@@ -59,6 +63,7 @@ services:
     arguments:
       -
         reference_entity:           '@Aa\DeploymentTask\DataMigration\Connector\ReferenceEntity'
+        reference_entity_record:    '@Aa\DeploymentTask\DataMigration\Connector\ReferenceEntityRecord'
         reference_entity_attribute: '@Aa\DeploymentTask\DataMigration\Connector\ReferenceEntityAttribute'
         association_type:           '@Aa\DeploymentTask\DataMigration\Connector\Association'
         attribute:                  '@Aa\DeploymentTask\DataMigration\Connector\Attribute'
