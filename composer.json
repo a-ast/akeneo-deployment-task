@@ -1,0 +1,16 @@
+{
+  "name": "a-ast/akeneo-deployment-task",
+  "description": "Akeneo PIM Deployment Tasks Bundle",
+  "keywords": ["akeneo"],
+  "type": "library",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Aa\\DeploymentTask\\": "src/"
+    }
+  },
+  "require": {
+    "akeneo/pim-community-dev": "^4.0"
+  }
+}
