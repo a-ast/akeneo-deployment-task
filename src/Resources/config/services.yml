@@ -1,0 +1,73 @@
+services:
+  Aa\DeploymentTask\Command\DeploymentCommand:
+    arguments:
+      - '@Aa\DeploymentTask\Task\DataMigrationTask'
+    tags:
+      - { name: 'console.command' }
+
+  Aa\DeploymentTask\Task\ApiClientTask:
+    arguments:
+      - '@fos_oauth_server.client_manager.default'
+
+  Aa\DeploymentTask\EventSubscriber\InstallationEventSubscriber:
+    arguments:
+      - '@Aa\DeploymentTask\Task\ApiClientTask'
+      - '@Aa\DeploymentTask\Task\DataMigrationTask'
+    tags:
+      - { name: kernel.event_subscriber }
+    public: true
+
+  Aa\DeploymentTask\DataMigration\Connector\ReferenceEntity:
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update'
+
+  Aa\DeploymentTask\DataMigration\Connector\ReferenceEntityAttribute:
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update'
+
+  Aa\DeploymentTask\DataMigration\Connector\Association:
+    arguments:
+      - '@pim_api.controller.association_type'
+    public: true
+
+  Aa\DeploymentTask\DataMigration\Connector\Attribute:
+    arguments:
+      - '@pim_api.controller.attribute'
+
+  Aa\DeploymentTask\DataMigration\Connector\AttributeOption:
+    arguments:
+      - '@pim_api.controller.attribute_option'
+
+  Aa\DeploymentTask\DataMigration\Connector\Family:
+    arguments:
+      - '@pim_api.controller.family'
+
+  Aa\DeploymentTask\DataMigration\Connector\AttributeToFamilyAssignment:
+    arguments:
+      - '@akeneo.pim.automation.franklin_insights.application.structure.service.add_attribute_to_family'
+
+  Aa\DeploymentTask\DataMigration\Connector\JobInstance:
+    arguments:
+      - '@akeneo_batch.job_instance_factory'
+      - '@akeneo_batch.job.job_registry'
+      - '@akeneo_batch.job_parameters_factory'
+      - '@akeneo_batch.job.job_parameters_validator'
+      - '@validator'
+      - '@akeneo_batch.saver.job_instance'
+
+  Aa\DeploymentTask\DataMigration\DataLoader:
+    arguments:
+      -
+        reference_entity:           '@Aa\DeploymentTask\DataMigration\Connector\ReferenceEntity'
+        reference_entity_attribute: '@Aa\DeploymentTask\DataMigration\Connector\ReferenceEntityAttribute'
+        association_type:           '@Aa\DeploymentTask\DataMigration\Connector\Association'
+        attribute:                  '@Aa\DeploymentTask\DataMigration\Connector\Attribute'
+        attribute_option:           '@Aa\DeploymentTask\DataMigration\Connector\AttributeOption'
+        family:                     '@Aa\DeploymentTask\DataMigration\Connector\Family'
+        attribute_in_family:        '@Aa\DeploymentTask\DataMigration\Connector\AttributeToFamilyAssignment'
+        job_instance:               '@Aa\DeploymentTask\DataMigration\Connector\JobInstance'
+
+  Aa\DeploymentTask\Task\DataMigrationTask:
+    arguments:
+      - '%kernel.project_dir%/install/reference-items/'
+      - '@Aa\DeploymentTask\DataMigration\DataLoader'
