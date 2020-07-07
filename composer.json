@@ -1,5 +1,5 @@
 {
-  "name": "a-ast/akeneo-deployment-task",
+  "name": "aa/akeneo-deployment-task",
   "description": "Akeneo PIM Deployment Tasks Bundle",
   "keywords": ["akeneo"],
   "type": "library",
