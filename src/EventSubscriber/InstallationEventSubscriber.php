@@ -52,7 +52,7 @@ class InstallationEventSubscriber implements EventSubscriberInterface
             'migrations' => [
                 'reference_entity' => 'reference_entity',
                 'reference_entity_attribute' => 'reference_entity_attribute',
-                'reference_entity_record' => 'colours',
+                'reference_entity_record' => 'reference_entity_record',
             ]
         ]);
     }
