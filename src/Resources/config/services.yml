@@ -9,9 +9,14 @@ services:
     arguments:
       - '@fos_oauth_server.client_manager.default'
 
+  Aa\DeploymentTask\Task\AdminUserSanitizerTask:
+    arguments:
+      - '@pim_user.manager'
+
   Aa\DeploymentTask\EventSubscriber\InstallationEventSubscriber:
     arguments:
       - '@Aa\DeploymentTask\Task\ApiClientTask'
+      - '@Aa\DeploymentTask\Task\AdminUserSanitizerTask'
       - '@Aa\DeploymentTask\Task\DataMigrationTask'
     tags:
       - { name: kernel.event_subscriber }

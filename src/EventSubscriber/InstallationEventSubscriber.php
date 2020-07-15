@@ -2,6 +2,7 @@
 
 namespace Aa\DeploymentTask\EventSubscriber;
 
+use Aa\DeploymentTask\Task\AdminUserSanitizerTask;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Aa\DeploymentTask\Task\ApiClientTask;
@@ -21,11 +22,18 @@ class InstallationEventSubscriber implements EventSubscriberInterface
      */
     private $dataMigrationTask;
 
+    /**
+     * @var \Aa\DeploymentTask\Task\AdminUserSanitizerTask
+     */
+    private $adminUserSanitizerTask;
+
     public function __construct(
         ApiClientTask $apiClientCreator,
+        AdminUserSanitizerTask $adminUserSanitizerTask,
         DataMigrationTask $dataMigrationTask
     ) {
         $this->apiClientCreator = $apiClientCreator;
+        $this->adminUserSanitizerTask = $adminUserSanitizerTask;
         $this->dataMigrationTask = $dataMigrationTask;
     }
 
@@ -60,6 +68,7 @@ class InstallationEventSubscriber implements EventSubscriberInterface
 
     public function onPostLoadFixtures(InstallerEvent $event)
     {
+        $this->adminUserSanitizerTask->execute([]);
     }
 
     public function onPreLoadFixture(InstallerEvent $event)
