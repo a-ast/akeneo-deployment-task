@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InstallationEventSubscriber implements EventSubscriberInterface
 {
+
     /**
      * @var ApiClientTask
      */
@@ -36,24 +37,54 @@ class InstallationEventSubscriber implements EventSubscriberInterface
         return [
             InstallerEvents::PRE_LOAD_FIXTURES => 'onPreLoadFixtures',
             InstallerEvents::POST_LOAD_FIXTURES => 'onPostLoadFixtures',
+            InstallerEvents::PRE_LOAD_FIXTURE => 'onPreLoadFixture',
         ];
     }
 
     public function onPreLoadFixtures(InstallerEvent $event)
     {
-        $this->dataMigrationTask->execute(['migrations' => [
-            'reference_entity' => 'reference_entity_init']
-        ]);
+        // Important: reference entities must be initialized with codes before attributes are imported
+        // The reason is because Akeneo activates locales only after importing channels
+        // and channel fixtures executed after attributes
+        $this->dataMigrationTask->execute(
+            [
+                'migrations' => [
+                    [
+                        'type' => 'reference_entity',
+                        'file' => 'reference_entity_init'
+                    ],
+                ]
+            ]
+        );
     }
 
     public function onPostLoadFixtures(InstallerEvent $event)
     {
-        $this->dataMigrationTask->execute([
-            'migrations' => [
-                'reference_entity' => 'reference_entity',
-                'reference_entity_attribute' => 'reference_entity_attribute',
-                'reference_entity_record' => 'reference_entity_record',
+    }
+
+    public function onPreLoadFixture(InstallerEvent $event)
+    {
+        if ('fixtures_product_model_csv' !== $event->getSubject()) {
+            return;
+        }
+
+        $this->dataMigrationTask->execute(
+            [
+                'migrations' => [
+                    [
+                        'type' => 'reference_entity',
+                        'file' => 'reference_entity'
+                    ],
+                    [
+                        'type' => 'reference_entity_attribute',
+                        'file' => 'reference_entity_attribute'
+                    ],
+                    [
+                        'type' => 'reference_entity_record',
+                        'file' => 'reference_entity_record'
+                    ],
+                ]
             ]
-        ]);
+        );
     }
 }

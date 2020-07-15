@@ -28,8 +28,8 @@ class DataMigrationTask
     {
         Assert::isArray($config['migrations']);
 
-        foreach ($config['migrations'] as $alias => $fileName) {
-            $this->loadMigrationFile($alias, $fileName);
+        foreach ($config['migrations'] as $migrationData) {
+            $this->loadMigrationFile($migrationData['type'], $migrationData['file']);
         }
     }
 
