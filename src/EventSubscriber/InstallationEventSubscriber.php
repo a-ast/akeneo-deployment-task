@@ -69,6 +69,7 @@ class InstallationEventSubscriber implements EventSubscriberInterface
     public function onPostLoadFixtures(InstallerEvent $event)
     {
         $this->adminUserSanitizerTask->execute([]);
+        $this->apiClientCreator->execute([]);
     }
 
     public function onPreLoadFixture(InstallerEvent $event)
