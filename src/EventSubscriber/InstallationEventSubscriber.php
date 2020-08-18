@@ -90,6 +90,10 @@ class InstallationEventSubscriber implements EventSubscriberInterface
                         'file' => 'reference_entity_attribute'
                     ],
                     [
+                        'type' => 'reference_entity_attribute_option',
+                        'file' => 'reference_entity_attribute_option'
+                    ],
+                    [
                         'type' => 'reference_entity_record',
                         'file' => 'reference_entity_record'
                     ],
