@@ -61,6 +61,10 @@ class InstallationEventSubscriber implements EventSubscriberInterface
                         'type' => 'reference_entity',
                         'file' => 'reference_entity_init'
                     ],
+                    [
+                        'type' => 'asset_family',
+                        'file' => 'asset_family_init'
+                    ],
                 ]
             ]
         );
@@ -96,7 +100,7 @@ class InstallationEventSubscriber implements EventSubscriberInterface
                     [
                         'type' => 'reference_entity_record',
                         'file' => 'reference_entity_record'
-                    ],
+                    ]
                 ]
             ]
         );
